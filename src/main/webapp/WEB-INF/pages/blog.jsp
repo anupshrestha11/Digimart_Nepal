@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="head.jsp" %>
 <%@include file="header.jsp" %>
 <style>
@@ -17,23 +18,30 @@
         min-height: 100vh;
     }
 
-    footer {
-        margin-top: auto;
+
+
+    .heading {
+        width: 100%;
     }
-.heading{
-    width: 100%;
-}
-.heading img{
-    margin-top: 1rem;
-    width: 100%;
-    max-height: 400px;
-    object-fit: cover;
-}
+
+    .heading img {
+        margin-top: 1rem;
+        width: 100%;
+        max-height: 400px;
+        object-fit: cover;
+    }
+    .comment .comments{
+        width: 100%;
+    }
+
     .comment .comment-box {
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
         overflow: auto;
         padding: 30px 20px;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
     }
 
     .comment .comment-box .commentor-img {
@@ -42,7 +50,6 @@
         -o-object-fit: cover;
         object-fit: cover;
         border-radius: 50%;
-        float: left;
         margin: 20px;
         -webkit-box-shadow: 0px 0px 20px #999;
         box-shadow: 0px 0px 20px #999;
@@ -52,6 +59,7 @@
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
         overflow: auto;
+        flex-grow: 2;
         padding: 10px 20px;
         border-radius: 10px;
         -webkit-box-shadow: 0px 0px 20px #999;
@@ -94,20 +102,21 @@
     .comment .input-comment .comment-form .btn-submit:hover {
         background: #42287e;
     }
-    .fb-login-btn{
+
+    .fb-login-btn {
         background-color: #2d88ff;
         margin-bottom: 2rem;
         color: #fff;
-        font-size: 150%;
     }
-    .fb-login-btn:hover{
+
+    .fb-login-btn:hover {
         background-color: #00aced;
         color: #fff;
         transition: background-color ease-in-out 0.5s;
     }
 
     @media screen and (max-width: 756px) {
-       .content img {
+        .content img {
             width: 100% !important;
             height: auto !important;
             margin: 0 auto !important;
@@ -124,7 +133,8 @@
     </div>
     <hr>
     <div class="content col-sm-12">
-        <small>Posted by <span class="font-italic text-success font-weight-bold">${blogpost.author}</span> on ${blogpost.postedDate}</small>
+        <small>Posted by <span class="font-italic text-success font-weight-bold">${blogpost.author}</span>
+            on ${blogpost.postedDate}</small>
         <p class="col-sm-12">
             ${blogpost.post}
         </p>
@@ -133,65 +143,56 @@
 </div>
 
 <section class="comment container">
-        <h3>Comments</h3>
-        <hr>
+    <h3>Comments</h3>
+    <hr>
+    <div class="row comments">
+        <c:forEach items="${comments}" varStatus="i" var="comment">
+            <div class="comment-box">
+                <img src="${comment.imageUrl}" class="commentor-img"/>
+                <div class="comment-content">
+                    <h5 class="commentor-name">${comment.name}</h5>
+                    <p>
+                            ${comment.comment}
+                    </p>
+                    <small>${comment.postedDate}</small>
+                </div>
+            </div>
+        </c:forEach>
+
+    </div>
+
+    <div class="input-comment">
         <div class="row">
-            <div class="comment-box">
-                <img src="/upload/person.jpg" class="commentor-img"/>
-                <div class="comment-content">
-                    <h5 class="commentor-name">John Doe</h5>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Asperiores maxime, voluptate itaque obcaecati blanditiis
-                        deleniti molestias tempora dolore ratione eos? Lorem ipsum,
-                        dolor sit amet consectetur adipisicing elit. Reprehenderit,
-                        pariatur!
-                    </p>
-                    <small>March 20, 2020</small>
-                </div>
-            </div>
-            <div class="comment-box">
-                <img src="/upload/person.jpg" class="commentor-img"/>
-                <div class="comment-content">
-                    <h5 class="commentor-name">Mary Doe</h5>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Asperiores maxime, voluptate itaque obcaecati blanditiis
-                        deleniti molestias tempora dolore ratione eos? Lorem ipsum,
-                        dolor sit amet consectetur adipisicing elit. Reprehenderit,
-                        pariatur!
-                    </p>
-                    <small>March 20, 2020</small>
-                </div>
-            </div>
-        </div>
 
-        <div class="input-comment">
-            <div class="row">
-
-                <div class="col-md-1 col-sm-12 text-center">
-                    <img src="/upload/person.jpg" class="commentor-img text-center"/>
-                </div>
-                <div class="col-md-11 col-sm-12">
-                    <form action="" class="col-sm-12 comment-form text-center">
-                        <h5 id="commentor-name"></h5>
-                        <div class="input-group">
+            <div class="col-md-1 col-sm-12 text-center">
+                <img src="/upload/person.jpg" class="commentor-img text-center"/>
+            </div>
+            <div class="col-md-11 col-sm-12">
+                <form action="/comment/${blogpost.id}" id="commentForm" method="post"
+                      class="col-sm-12 comment-form text-center">
+                    <h5 id="commentor-name"></h5>
+                    <input type="text" hidden name="blogPostId">
+                    <input type="text" hidden name="name" id="name">
+                    <input type="text" hidden name="imageUrl" id="imageUrl">
+                    <div class="input-group">
                   <textarea
-                          name=""
+                          type="text"
+                          name="comment"
                           id="ta"
                           rows="2"
                           class="form-control col-sm-12"
                           placeholder="Write a comment..."
                   ></textarea>
-                        </div>
-                        <input type="submit" class="btn btn-submit" value="Submit"/>
-                    </form>
-                </div>
+                    </div>
+                    <input type="submit" class="btn btn-submit" value="Submit"/>
+                </form>
             </div>
         </div>
-        <div class="col-sm-12 text-center">
-            <button class="btn fb-login-btn" onclick="login()">Log in with Facebook to comment</button>
-        </div>
+    </div>
+    <div class="col-sm-12 text-center">
+        <h5 id="status"></h5>
+        <button class="btn fb-login-btn" onclick="login()">Log in with Facebook to comment</button>
+    </div>
 </section>
 
 
@@ -213,10 +214,12 @@
                 FB.api('/me', 'GET', {fields: 'id,name,picture'}, function (
                     response
                 ) {
-                    console.log(inputComment.querySelector('img'));
                     inputComment.querySelector('img').src = response.picture.data.url;
                     inputComment.querySelector('#commentor-name').textContent = response.name;
                     inputComment.style.display = "block";
+                    $('#name').val(response.name);
+                    console.log($("#name"))
+                    $('#imageUrl').val(response.picture.data.url);
                     document.querySelector('.fb-login-btn').style.display = "none";
                 });
             } else {
@@ -235,7 +238,27 @@
             $('#ta').attr('rows', rows);
         }
     });
+
     let ta = document.getElementById('ta').val;
+
+
+    const commentForm = document.getElementById("commentForm");
+    commentForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const request = new XMLHttpRequest();
+        request.open("post", "/comment/${blogpost.id}");
+        request.onload = () => {
+            console.log(request.responseText);
+            $('#ta').val("");
+            document.getElementById('status').textContent = request.responseText;
+            document.getElementById('status').classList.toggle("text-success");
+        }
+        request.send(new FormData(commentForm));
+        console.log("form has been submitted");
+
+    });
+
+
 </script>
 <script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
 

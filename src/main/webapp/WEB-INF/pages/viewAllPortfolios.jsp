@@ -1,7 +1,33 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="head.jsp" %>
 <%@include file="header.jsp" %>
+<style>
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
 
+    footer {
+        margin-bottom: auto;
+    }
+    .all-portfolio{
+        margin-bottom: 2em;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(325px, 1fr));
+    }
+    .all-portfolio img{
+        min-width: 300px;
+        height: 250px;
+        object-fit: cover;
+    }
+    .all-portfolio .card{
+        width: 100%;
+        box-shadow: 0px 5px 10px #999;
+        margin: 20px auto;
+        box-sizing: border-box;
+    }
+</style>
 <div class="container">
     <div class="title row">
         <div class="col-12">
@@ -9,26 +35,23 @@
         </div>
     </div>
     <hr>
-    <div class="row">
-        <% for(int i=0; i<10;i++){%>
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <img
-                        class="card-img-top"
-                        src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.ytimg.com%2Fvi%2FS0mhvQxvy58%2Fhqdefault.jpg&f=1&nofb=1"
-                        alt="Card image cap"
-                />
-                <div class="card-body">
-                    <h4 class="card-title">Anup Shrestha</h4>
-                    <p class="card-text">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium dolorum ea, eos error
-                        laudantium molestiae nisi odio perferendis sint sunt, tempore totam unde. Aliquam amet...
-                    </p>
-                    <a class="btn btn-warning">Read More</a>
+    <div class="all-portfolio">
+        <c:forEach items="${portfolios}" var="portfolio" varStatus="i">
+                <div class="card">
+                    <img
+                            class="card-img-top"
+                            src="..\upload/<c:out value="${portfolio.image}"></c:out>"
+                            alt="Card image cap"
+                    />
+                    <div class="card-body">
+                        <h4 class="card-title"><c:out value="${portfolio.title}"></c:out></h4>
+                        <p class="card-text">
+                            <c:out value="${portfolio.description}"></c:out>
+                        </p>
+                            <%--                        <a class="btn btn-warning">Read More</a>--%>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <%}%>
+        </c:forEach>
     </div>
 </div>
 

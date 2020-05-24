@@ -22,6 +22,8 @@
             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
             crossorigin="anonymous"></script>
 
+
+
 </head>
 
 <body>
@@ -47,7 +49,7 @@
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
             <button class="btn btn-primary" id="menu-toggle">Menu</button>
-            <a href="/" class="btn text-success font-weight-bold">Visit Site</a>
+            <a href="/" class="btn btn-success ml-2" >Visit Site</a>
 
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -63,9 +65,21 @@
                             ${username}
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="/logout">Logout</a>
+                            <a class="dropdown-item" id="logout" href="/logout">Logout</a>
                         </div>
                     </li>
                 </ul>
             </div>
         </nav>
+        <script>
+            document.querySelector('#logout').addEventListener('click',(e)=>{
+                e.preventDefault();
+                if (confirm("Do you want to logout!!!")){
+                    const href = e.target.href;
+                    const request = new XMLHttpRequest();
+                    request.open('get',href);
+                    request.send();
+                    location.reload();
+                }
+            })
+        </script>

@@ -41,8 +41,9 @@
                     <p>Published Date: ${blogpost.postedDate}</p>
                 </div>
                 <div class="post-action">
-                    <a class="btn btn-warning" href="/admin/blog/edit/${blogpost.id}">Edit</a>
-                    <a class="btn btn-danger" href="/admin/blog/delete/${blogpost.id}">Delete</a>
+                    <a class="btn btn-secondary mb-2" href="/admin/blog/comments/${blogpost.id}">View Comments</a>
+                    <a class="btn btn-warning mb-2" href="/admin/blog/edit/${blogpost.id}">Edit</a>
+                    <a class="btn btn-danger mb-2" href="/admin/blog/delete/${blogpost.id}">Delete</a>
                 </div>
             </div>
         </c:forEach>

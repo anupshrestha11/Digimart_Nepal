@@ -8,10 +8,10 @@ $('.portfolios').owlCarousel({
     responsive:{
         0:{
             items:1,
-            dots:false,
+            // dots:false,
             nav:false
         },
-        600:{
+        800:{
             items:2,
             nav:false
 
@@ -31,7 +31,7 @@ $('.testimonials').owlCarousel({
     responsive:{
         0:{
             items:1,
-            dots:false,
+            // dots:false,
             nav:false
         },
         600:{

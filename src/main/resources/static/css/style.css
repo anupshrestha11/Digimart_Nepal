@@ -323,12 +323,11 @@ aboutUs .about-item img {
 .fa-google-plus-g:hover,
 .fa-instagram:hover,
 .fa-youtube:hover {
-    color: #d5d5d5;
+    transform: translateY(30%);
 }
 
 footer {
-    position: sticky;
-    bottom: 0;
+    margin-top: auto;
 }
 
 footer hr {

@@ -1,4 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<style>
+    .testimonial-item{
+        padding:  20px;
+        margin: 20px;
+        border-radius: 20px ;
+        box-shadow: 0px 5px 15px #555;
+    }
+</style>
 <testimonial>
     <div class="conatiner padding" id="testimonial">
         <div class="row title text-center">

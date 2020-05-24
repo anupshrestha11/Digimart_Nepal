@@ -21,7 +21,7 @@
                     <a class="nav-link" href="#testimonial">Testimonial</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#contactUs">Contact Us</a>
+                    <a class="nav-link" href="/contactus">Contact Us</a>
                 </li>
                 <li>
                     <a class="nav-link">

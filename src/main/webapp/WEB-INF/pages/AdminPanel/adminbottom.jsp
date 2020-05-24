@@ -14,6 +14,7 @@
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
+
 </script>
 
 </body>

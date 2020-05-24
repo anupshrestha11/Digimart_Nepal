@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -14,11 +15,19 @@ import javax.persistence.*;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  int id;
+    private int id;
 
-    private String Comment;
+    private String comment;
 
-    private int userId;
+    private String name;
+
+    private boolean isApproved;
+
+    @Column(name = "user_image_url")
+    private String imageUrl;
+
+    @Column(name = "posted_date")
+    private String postedDate;
 
     @ManyToOne(cascade = {
             CascadeType.DETACH,

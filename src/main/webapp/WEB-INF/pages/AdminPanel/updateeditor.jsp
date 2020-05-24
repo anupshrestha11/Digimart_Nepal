@@ -11,7 +11,7 @@
 <script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
 <div class="container">
     <h3 class="mt-3">Add Post</h3>
-    <form class="editorform row form" method="post" action="/admin/blog/update  " enctype="multipart/form-data" >
+    <form class="editorform row form" method="post" action="/admin/blog/update" enctype="multipart/form-data" >
         <div class="form-group col-12 right mt-3">
             <input type="submit" value="Publish" class="btn btn-outline-success ">
         </div>

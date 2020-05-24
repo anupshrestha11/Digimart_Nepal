@@ -1,4 +1,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<style>
+
+    .portfolios{
+        box-sizing: border-box;
+    }
+    .portfolios .card{
+        box-shadow: 0px 5px 15px #999;
+        margin: 10px 20px;
+        box-sizing: border-box;
+    }
+
+</style>
 <portfolio>
     <div class="conatiner-fluid padding" id="portfolio">
         <div class="row title text-center">
@@ -14,10 +26,9 @@
         <div class="owl-carousel owl-theme portfolios">
 
             <c:forEach items="${portfolios}" var="portfolio" varStatus="i">
-            <div class="ml-2 mr-2">
                 <div class="card">
                     <img
-                            class="card-img-top"
+                            class=" card-img-top"
                             src="..\upload/<c:out value="${portfolio.image}"></c:out>"
                             alt="Card image cap"
                     />
@@ -26,10 +37,9 @@
                         <p class="card-text">
                             <c:out value="${portfolio.description}"></c:out>
                         </p>
-<%--                        <a class="btn btn-warning">Read More</a>--%>
+                        <a class="btn btn-warning">Read More</a>
                     </div>
                 </div>
-            </div>
             </c:forEach>
         </div>
 

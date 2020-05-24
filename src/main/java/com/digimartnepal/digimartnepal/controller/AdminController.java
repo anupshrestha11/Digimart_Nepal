@@ -1,10 +1,7 @@
 package com.digimartnepal.digimartnepal.controller;
 
 import com.digimartnepal.digimartnepal.model.*;
-import com.digimartnepal.digimartnepal.repo.BlogPostRepo;
-import com.digimartnepal.digimartnepal.repo.PortfolioRepo;
-import com.digimartnepal.digimartnepal.repo.SliderImageRepo;
-import com.digimartnepal.digimartnepal.repo.TestimonialRepo;
+import com.digimartnepal.digimartnepal.repo.*;
 import com.digimartnepal.digimartnepal.service.AdminService;
 import com.digimartnepal.digimartnepal.service.SliderImageService;
 import lombok.SneakyThrows;
@@ -254,6 +251,7 @@ public class AdminController {
 
     @RequestMapping("/admin/manageblog")
     public String showBlogPost(ModelMap modelMap) {
+        sessionUsername(modelMap);
         List<BlogPost> blogPosts = blogPostRepo.findAll();
         Collections.reverse(blogPosts);
         modelMap.put("blogposts", blogPosts);
@@ -262,6 +260,7 @@ public class AdminController {
 
     @RequestMapping("/admin/blogeditor")
     public String showEditor(ModelMap modelMap) {
+        sessionUsername(modelMap);
         modelMap.remove("blogpost");
         return "AdminPanel/blogeditor";
     }
@@ -289,17 +288,16 @@ public class AdminController {
 
     @PostMapping("/admin/blog/publish")
     public String publishBlog(@ModelAttribute TempBlogpost tempblogPost, HttpServletRequest request) throws IOException {
-        BlogPost blogPost = null;
-        if (tempblogPost.getBannerImage().isEmpty()){
-                return null;
-        }
-        else{
+        BlogPost blogPost = new BlogPost();
+        if (tempblogPost.getBannerImage().isEmpty()) {
+            return null;
+        } else {
             String path = request.getServletContext().getRealPath("/");
             File files = new File(path + "upload");
             files.mkdir();
             tempblogPost.getBannerImage().transferTo(new File(files.getPath() + File.separator + tempblogPost.getBannerImage().getOriginalFilename()));
         }
-        blogPost = new BlogPost(tempblogPost.getAuthor(), tempblogPost.getTitle(), tempblogPost.getPost(), tempblogPost.getBannerImage().getOriginalFilename(), tempblogPost.getBlogDesc() );
+        blogPost = new BlogPost(tempblogPost.getAuthor(), tempblogPost.getTitle(), tempblogPost.getPost(), tempblogPost.getBannerImage().getOriginalFilename(), tempblogPost.getBlogDesc());
         blogPost.setAddedBy(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
@@ -307,6 +305,21 @@ public class AdminController {
         System.out.println(blogPost.toString());
         blogPostRepo.save(blogPost);
         return "redirect:/admin/manageblog";
+    }
+
+    @RequestMapping("/admin/blog/comments/{id}")
+    public String viewComments(@PathVariable("id") int id, ModelMap model) {
+        sessionUsername(model);
+
+        Optional<BlogPost> blogPost = blogPostRepo.findById(id);
+        if (!blogPost.isPresent()) {
+            return "redirect: /error";
+        }
+        List<Comment> comments = blogPost.get().getComments();
+        Collections.reverse(comments);
+        model.put("blogpost", blogPost.get());
+        model.put("comments", comments);
+        return "AdminPanel/viewComments";
     }
 
     @RequestMapping("/admin/blog/delete/{id}")
@@ -322,14 +335,14 @@ public class AdminController {
         return "AdminPanel/updateeditor";
     }
 
-    @RequestMapping("/admin/blog/update")
+    @PostMapping("/admin/blog/update")
     public String updateBlog(@ModelAttribute TempBlogpost tempBlogpost, HttpServletRequest request) throws IOException {
         BlogPost blogPost = blogPostRepo.getOne(tempBlogpost.getId());
         blogPost.setTitle(tempBlogpost.getTitle());
         blogPost.setAuthor(tempBlogpost.getAuthor());
         blogPost.setPost(tempBlogpost.getPost());
         blogPost.setBlogDesc(tempBlogpost.getBlogDesc());
-        if (!tempBlogpost.getBannerImage().isEmpty()){
+        if (!tempBlogpost.getBannerImage().isEmpty()) {
             String path = request.getServletContext().getRealPath("/");
             File files = new File(path + "upload");
             files.mkdir();
@@ -343,6 +356,22 @@ public class AdminController {
         blogPostRepo.save(blogPost);
         return "redirect:/admin/manageblog";
 
+    }
+
+    @Autowired
+    CommentRepo commentRepo;
+
+    @RequestMapping("/admin/status/{status}/{id}")
+    @ResponseBody
+    public String commentStatus(@PathVariable("status") String status, @PathVariable("id") int id) {
+        Comment comment = commentRepo.getOne(id);
+        if (status.equalsIgnoreCase("accept")) {
+            comment.setApproved(true);
+            commentRepo.save(comment);
+        } else {
+            commentRepo.deleteById(id);
+        }
+        return "Comment is " + status;
     }
 
 }
